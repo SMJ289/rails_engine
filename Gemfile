@@ -35,6 +35,8 @@ group :development, :test do
   gem 'pry'
 end
 
+gem 'simplecov', require: false, group: :test
+
 group :development do
   gem 'listen', '>= 3.0.5', '< 3.2'
 end
@@ -44,3 +46,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'rspec-rails'
+
+gem 'rack-cors'
