@@ -10,7 +10,7 @@ describe 'Merchant API' do
 
     merchants = JSON.parse(response.body)
     
-    expect(merchants.count).to eq(3)
+    expect(merchants["data"].count).to eq(3)
   end
 
   it "can get one merchant by its id" do
@@ -21,7 +21,7 @@ describe 'Merchant API' do
     merchant = JSON.parse(response.body)
 
     expect(response).to be_successful
-    expect(merchant["id"]).to eq(id)
+    expect(merchant["data"]["attributes"]["id"]).to eq(id)
   end
 
   it "can create a new merchant" do
@@ -29,9 +29,11 @@ describe 'Merchant API' do
 
     post "/api/v1/merchants", params: {merchant: merchant_params}
     merchant = Merchant.last
+    merchant_response = JSON.parse(response.body)
 
     expect(response).to be_successful
     expect(merchant.name).to eq(merchant_params[:name])
+    expect(merchant_response['data']['attributes']['name']).to eq(merchant_params[:name])
   end
 
   it "can update an existing merchant" do
@@ -41,10 +43,12 @@ describe 'Merchant API' do
 
     put "/api/v1/merchants/#{id}", params: {merchant: merchant_params}
     merchant = Merchant.find_by(id: id)
-
+    merchant_response = JSON.parse(response.body)
+    
     expect(response).to be_successful
     expect(merchant.name).to_not eq(previous_name)
     expect(merchant.name).to eq("IHOP")
+    expect(merchant_response['data']['attributes']['name']).to eq("IHOP")
   end
 
   it "can destroy a merchant" do
