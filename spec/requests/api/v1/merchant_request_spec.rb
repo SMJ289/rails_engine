@@ -27,7 +27,7 @@ describe 'Merchant API' do
   it "can create a new merchant" do
     merchant_params = { name: "Waffle House" }
 
-    post "/api/v1/merchants", params: {merchant: merchant_params}
+    post "/api/v1/merchants", params: merchant_params
     merchant = Merchant.last
     merchant_response = JSON.parse(response.body)
 
@@ -41,7 +41,7 @@ describe 'Merchant API' do
     previous_name = Merchant.last.name
     merchant_params = { name: "IHOP" }
 
-    put "/api/v1/merchants/#{id}", params: {merchant: merchant_params}
+    put "/api/v1/merchants/#{id}", params: merchant_params
     merchant = Merchant.find_by(id: id)
     merchant_response = JSON.parse(response.body)
     
