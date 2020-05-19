@@ -39,5 +39,7 @@ task :import => [:environment] do
   CSV.foreach('lib/seeds/transactions.csv', headers: true) do |row|
     Transaction.create(row.to_h)
   end
-  
+
+  ActiveRecord::Base.connection.reset_pk_sequence!('items')
+  ActiveRecord::Base.connection.reset_pk_sequence!('merchants')
 end
