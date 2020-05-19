@@ -10,7 +10,7 @@ describe 'Merchant API' do
 
     merchants = JSON.parse(response.body)
     
-    expect(merchants["data"].count).to eq(3)
+    expect(merchants["data"].length).to eq(3)
   end
 
   it "can get one merchant by its id" do
@@ -61,5 +61,20 @@ describe 'Merchant API' do
     expect(response).to be_successful
     expect(Merchant.count).to eq(0)
     expect{Merchant.find(merchant.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'can find all items associated with given merchant' do
+    merchant1 = create(:merchant) 
+
+    item1 = create(:item, merchant_id: merchant1.id)
+    item2 = create(:item, merchant_id: merchant1.id)
+    item3 = create(:item, merchant_id: merchant1.id)
+    
+    merchant = Merchant.find_by(id: merchant1.id)
+    get "/api/v1/merchants/#{merchant1.id}/items"
+    merchant_response = JSON.parse(response.body, symbolize_names: true)
+
+    expect(merchant_response[:data].length).to eq(3)
+    expect(merchant_response[:data].first[:id]).to eq(item1.id.to_s)
   end
 end
