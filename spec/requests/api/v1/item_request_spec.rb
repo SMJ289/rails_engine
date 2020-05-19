@@ -61,8 +61,7 @@ describe 'Item API' do
   end
 
   it "can destroy an item" do
-    merchant = create(:merchant)
-    item = create(:item, merchant_id: merchant.id)
+    item = create(:item)
 
     expect(Item.count).to eq(1)
 
@@ -71,6 +70,15 @@ describe 'Item API' do
     expect(response).to be_successful
     expect(Item.count).to eq(0)
     expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
+  end
+
+  it 'can find the merchant by item' do
+    item = create(:item)
+    
+    get "/api/v1/items/#{item.id}/merchant"
+    item_response = JSON.parse(response.body, symbolize_names: true)
+
+    expect(item_response[:data][:attributes][:id]).to eq(item.merchant_id)
   end
 
 end
