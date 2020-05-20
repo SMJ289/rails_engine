@@ -11,4 +11,54 @@ RSpec.describe Item do
   it {should have_many(:invoices).through(:invoice_items)}
   it {should belong_to :merchant}
   end
+
+  describe 'class methods' do
+    it '.find_by_name()' do
+      item1 = create(:item, name: 'Steve Item')
+      item2 = create(:item, name: 'Bob Item')
+      item3 = create(:item, name: 'Sue Item')
+
+      expect(Item.find_by_name('eve')).to eq(item1)
+      expect(Item.find_by_name('St')).to eq(item1)
+      expect(Item.find_by_name('ob')).to eq(item2)
+    end
+  end
+
+  describe 'class methods' do
+    it '.find_all_by_name()' do
+      item1 = create(:item, name: 'Steve Item')
+      item2 = create(:item, name: 'Bob Item')
+      item3 = create(:item, name: 'Sue Item')
+      item4 = create(:item, name: 'WooHoo')
+
+      expect(Item.find_all_by_name('it').length).to eq(3)
+      expect(Item.find_all_by_name('EM').length).to eq(3)
+      expect(Item.find_all_by_name('te').length).to eq(3)
+    end
+  end
+
+  describe 'class methods' do
+    it '.find_by_description()' do
+      item1 = create(:item, description: 'An apple')
+      item2 = create(:item, description: 'The banana')
+      item3 = create(:item, description: 'a smelly orange')
+
+      expect(Item.find_by_description('app')).to eq(item1)
+      expect(Item.find_by_description('the')).to eq(item2)
+      expect(Item.find_by_description('range')).to eq(item3)
+    end
+  end
+
+  describe 'class methods' do
+    it '.find_all_by_description()' do
+      item1 = create(:item, description: 'The apple')
+      item2 = create(:item, description: 'The banana')
+      item3 = create(:item, description: 'The smelly orange')
+      item4 = create(:item, description: 'Grape')
+
+      expect(Item.find_all_by_description('the').length).to eq(3)
+      expect(Item.find_all_by_description('a').length).to eq(4)
+      expect(Item.find_all_by_description('he').length).to eq(3)
+    end
+  end
 end
