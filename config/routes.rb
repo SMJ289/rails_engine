@@ -11,7 +11,6 @@ Rails.application.routes.draw do
         get '/items', to: 'items_by_merchant#index'
       end
 
-
       resources :items, except: [:new, :edit] do
         get '/merchant', to: 'merchant_by_item#show'
       end

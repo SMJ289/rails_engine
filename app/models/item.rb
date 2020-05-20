@@ -19,4 +19,12 @@ class Item < ApplicationRecord
   def self.find_all_by_description(query)
     where("lower(description) like ?", "%#{query.downcase}%")
   end
+
+  def self.find_by_price(query)
+    find_by(unit_price: query)
+  end
+
+  def self.find_all_by_price(query)
+    where(unit_price: query)
+  end
 end
